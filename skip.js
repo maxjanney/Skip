@@ -14,10 +14,10 @@ function simulateClick(button) {
 }
 
 setInterval(function () {
-  let buttons = buttonClasses.flatMap(
-    (b) => Array.from(document.getElementsByClassName(b)) || []
-  );
-  buttons.forEach((button) => {
-    simulateClick(button);
+  const buttons = buttonClasses.flatMap((b) => {
+    Array.from(document.getElementsByClassName(b)) || [];
   });
+  for (const button of buttons) {
+    simulateClick(button);
+  }
 }, 1500);
