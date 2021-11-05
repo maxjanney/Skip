@@ -1,0 +1,15 @@
+{
+  "manifest_version": 2,
+  "name": "YT-Add-Skipper",
+  "version": "1.0",
+
+  "description": "Automatically skip youtube ads.",
+
+  "content_scripts": [
+    {
+      "matches": ["*://*.youtube.com/*"],
+      "js": ["skip.js"],
+      "run_at": "document_end"
+    }
+  ]
+}
