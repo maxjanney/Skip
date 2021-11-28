@@ -3,7 +3,7 @@ const buttonClasses = [
   "ytp-ad-overlay-close-button", // overlay ads
 ];
 
-function simulateClick(button) {
+const simulateClick = (button) => {
   button.dispatchEvent(
     new MouseEvent("click", {
       view: window,
@@ -11,13 +11,33 @@ function simulateClick(button) {
       cancelable: true,
     })
   );
-}
+};
 
-setInterval(function () {
-  const buttons = buttonClasses.flatMap(
-    (b) => Array.from(document.getElementsByClassName(b)) || []
+const skip = () => {
+  const activeButtons = buttonClasses.flatMap(
+    (button) => Array.from(document.getElementsByClassName(button)) || []
   );
-  buttons.forEach((button) => {
-    simulateClick(button);
-  });
-}, 2000);
+  activeButtons.forEach((button) => simulateClick(button));
+};
+
+/* Try using the mutation observer method */
+const tryObserver = () => {
+  if (!("MutationObserver" in window)) return false;
+
+  const player = (function (nodes) {
+    return nodes && nodes[0];
+  })(document.getElementsByTagName("ytd-player"));
+  
+  if (!player) return false;
+
+  const observer = new MutationObserver(skip);
+  observer.observe(player, { subtree: true, childList: true });
+
+  return true;
+};
+
+if (!tryObserver()) {
+  setInterval(function () {
+    skip();
+  }, 2000);
+}
